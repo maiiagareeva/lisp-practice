@@ -1,0 +1,12 @@
+ (filOpen 'inp "lispik.exe" _BINARY_READ)
+ (bloCreate 'buf 300)
+ (filGetBlo 'inp 'buf)
+ (str2blo 'buf "Бычий хвост" 3)
+ (bit2blo 'buf &H66778899 12 4)
+ (bit2blo 'buf &H66778899 16 4)
+ (filOpen 'out "a.bin" _BINARY_WRITE)
+ (filPutBlo 'out 'buf)
+ (filClose 'inp)
+ (filClose 'out)
+ (bloDestroy 'buf)
+

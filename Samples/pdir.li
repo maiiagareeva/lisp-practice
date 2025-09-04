@@ -1,0 +1,36 @@
+;;
+;; Отображение списка файлов по шаблону
+;; (Clisp или IDE)
+;;
+;; Файфель Б.Л. 
+;;
+(prog (lst item l)
+
+      (setq lst (sysDir "*.li" &HFF))
+
+      (printsline "+-------------------+")
+
+@loop (setq item (car lst))
+
+      (setq lst (cdr lst))
+
+      (setq l (strlen item))
+
+      (cond ((< l 17) (setq item (strcat item (strspace (- 17 l))))))
+
+      (prints "| ")
+      (prints item)
+      (printsline " |")
+
+      (cond ((null lst) (go @exit)))
+
+      (Go @loop)       
+
+@exit
+      
+      (printsline "+-------------------+")
+
+)
+
+
+  

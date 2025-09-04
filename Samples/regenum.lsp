@@ -1,0 +1,17 @@
+
+(defun KeyEnum (BRANCH KEY) (prog (id ha Tmp)
+                                  (setq Tmp (regOpenKey BRANCH KEY KEY_ALL_ACCESS))
+                                  (printline Tmp)
+                                  (setq ha (cadr Tmp))
+                                  (setq id 1)
+              getkey              (setq Tmp (regEnumKey ha id))     
+                                  (cond ((<> (car Tmp) 0) (go eor)))
+                                  (prints (cadr Tmp)) 
+                                  (terpri)
+                                  (setq id (add1 id))
+                                  (go getkey)
+              eor                 (regcloseKey ha)
+                             )
+)
+
+(keyEnum HKEY_LOCAL_MACHINE "Software\Microsoft\Windows\System\CurrentVersion\Run")

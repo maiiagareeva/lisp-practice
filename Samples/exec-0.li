@@ -1,0 +1,12 @@
+;;
+;;  Упаковка DOS-овским pkzip-ом
+;;
+;;  Файфель Б.Л.
+;;
+
+(setq Rc (sysExec "pkzip.exe" "all_lisp.zip *.li" 1))
+
+(cond ((= RC 0) (say 'Успешно!))
+      (T        (say (strcat "Ошибка RC=" (fix2str RC)))))
+
+

@@ -1,0 +1,98 @@
+;;
+;;
+;;
+;;
+;;
+
+//
+//  Объединение элементов строкового списка в единую строку
+//
+
+(defun strJoin (x y) (cond ((null x) "") ((stringp x) x) (T (strCat (strCat (car x) y) (strJoin (cdr x) y)))))
+
+//
+//  Программа отображения диалога _Dlg_
+//
+
+(prog nil
+
+      (dlgCreate '_Dlg_ 606 270 "Тест HomeLisp")
+
+      (dlgAddControl '_Dlg_ '_LBL_1 _LABEL 10 9 582 27 '("Tahoma" 15,75 1 0 0) "Перечисление параметров автозапуска" 2 &H80000012 &H8000000F)
+
+      (dlgAddControl '_Dlg_ '_LST_1 _LIST 7 53 584 122 '("Tahoma" 8 1 0 0) &H80000008 &H80000005)
+
+      (dlgAddControl '_Dlg_ '_BUT_1 _BUTTON 11 182 129 53 '("Tahoma" 8,25 1 0 0) "Показать")
+      
+      (dlgPutPicture '_BUT_1 37)
+
+      (dlgAddControl '_Dlg_ '_BUT_2 _BUTTON 149 182 129 53 '("Tahoma" 8,25 1 0 0) "Закрыть")
+
+      (dlgPutPicture '_BUT_2 36)
+
+      //
+      // Обработчик события CLICK для кнопки _BUT_1
+      //
+
+      (defun _BUT_1_Click  Nil 
+
+             (prog nil
+
+                (dlgClearList '_LST_1)
+
+                   (prog (id tmp h)
+
+                         (setq tmp (regOpenKey HKEY_LOCAL_MACHINE "Software\Microsoft\Windows\Currentversion\run" KEY_ALL_ACCESS))
+
+                         (cond ( (neq (car tmp) 0) (return nil) ))
+
+                         (setq h (cadr tmp))
+
+                         (setq id 0)
+
+                    @    (setq tmp (regEnumValue h id))
+
+                         (cond ( (neq (car tmp) 0) (go @eor) ))
+
+                         (dlgAddItem '_LST_1 (strJoin (cdr tmp) " "))
+
+                         (setq id (add1 id))
+
+                         (go @)
+
+                    @eor (regCloseKey h)
+                                 
+
+                  )
+ 
+             )
+
+      )
+
+      //
+      //   Назначение процедуры-события _BUT_1_Click  контролу _BUT_1
+      //
+
+      (dlgSetEvent '_BUT_1 '_BUT_1_Click )
+      //
+      // Обработчик события CLICK для кнопки _BUT_2
+      //
+
+      (defun _BUT_2_Click  Nil 
+
+          (dlgHide '_dlg_)
+
+      )
+
+      //
+      //   Назначение процедуры-события _BUT_2_Click  контролу _BUT_2
+      //
+
+      (dlgSetEvent '_BUT_2 '_BUT_2_Click )
+
+      //
+      //   Отображение диалога _Dlg_
+      //
+
+      (dlgShow '_Dlg_)
+)

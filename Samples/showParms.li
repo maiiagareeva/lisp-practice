@@ -1,0 +1,5 @@
+(setq n (sysArgc))
+(setq Txt "")
+(for i 0 n ((Setq txt (strCat txt (fix2str i) " -> " (sysArgv i) (strChr 10) ))))
+(Say Txt)
+

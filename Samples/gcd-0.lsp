@@ -1,0 +1,102 @@
+
+//
+//  Поиск наибольшего общего делителя
+//
+
+(defun *gcd (x y) (cond ((eq x y)                x)
+                        ((greaterp y x) (*gcd y x))
+                        ((eq (remainder x y) 0)  y)
+                        (T              (*gcd y (remainder x y)))))
+
+//
+//  Программа отображения диалога _Dlg_
+//
+
+
+(defun main nil
+
+   (prog nil
+
+      (dlgCreate '_Dlg_ 419 233 "Наибольший общий делитель:")
+
+      (dlgAddControl '_Dlg_ '_LBL_1 _LABEL 14 15 100 21 '("Tahoma" 14,25 1 0 0) "Первое:" 0 &H80000012 &H8000000F)
+
+      (dlgAddControl '_Dlg_ '_TXT_1 _TEXT 155 13 248 31 '("Tahoma" 14 1 0 0) "" 0 &H80000008 &H80000005)
+
+      (dlgAddControl '_Dlg_ '_LBL_2 _LABEL 12 59 133 26 '("Tahoma" 14,25 1 0 0) "Второе:" 0 &H80000012 &H8000000F)
+
+      (dlgAddControl '_Dlg_ '_TXT_2 _TEXT 156 56 247 31 '("Tahoma" 14 1 0 0) "" 0 &H80000008 &H80000005)
+
+      (dlgAddControl '_Dlg_ '_LBL_3 _LABEL 13 101 127 27 '("Tahoma" 14,25 1 0 0) "Н.О.Д." 0 &HFF &H8000000F)
+
+      (dlgAddControl '_Dlg_ '_TXT_3 _TEXT 157 98 247 31 '("Tahoma" 14 1 0 0) "" 0 &HFF &H80000005)
+
+      (dlgAddControl '_Dlg_ '_BUT_1 _BUTTON 24 148 180 50 '("Tahoma" 8,25 1 0 0) "Вычислить")
+      (dlgPutPicture '_BUT_1 7)
+
+      (dlgAddControl '_Dlg_ '_BUT_2 _BUTTON 213 149 180 50 '("Tahoma" 8,25 1 0 0) "Закрыть")
+      (dlgPutPicture '_BUT_2 36)
+
+      //
+      // Обработчик события CLICK для кнопки _BUT_2
+      //
+
+      (defun _BUT_2_Click  Nil 
+
+          (prog Nil
+
+               (dlgHide '_DLG_) 
+  
+               (dlgDestroy '_DLG_)
+    
+               (gc)
+
+          )
+
+      )
+
+      //
+      //   Назначение процедуры-события _BUT_2_Click  контролу _BUT_2
+      //
+
+      (dlgSetEvent '_BUT_2 '_BUT_2_Click )
+      //
+      // Обработчик события CLICK для кнопки _BUT_1
+      //
+
+      (defun _BUT_1_Click  Nil 
+
+            (prog (a1 a2)
+                 
+               (setq a1 (str2fix  (dlgGetText '_TXT_1)))
+                  
+               (setq a2 (str2fix  (dlgGetText '_TXT_2)))
+
+               (TRY
+               
+                    (dlgPutText '_TXT_3 (fix2str (*gcd a1 a2)))
+                    
+                EXCEPT
+
+                    (dlgPutText '_TXT_3 "Ошибка!!!")      
+
+               )
+            )
+
+      )
+
+      //
+      //   Назначение процедуры-события _BUT_1_Click  контролу _BUT_1
+      //
+
+      (dlgSetEvent '_BUT_1 '_BUT_1_Click )
+
+      //
+      //   Отображение диалога _Dlg_
+      //
+
+      (dlgShow '_Dlg_)
+   )
+
+)
+

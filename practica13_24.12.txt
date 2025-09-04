@@ -1,0 +1,379 @@
+#№ 1
+from typing import Tuple
+from tkinter import *
+
+
+class BaseObject:
+    def __init__(self, x, y, z):
+        self.x = x
+        self.y = y
+        self.z = z
+    def coordinates(self):
+        return (self.x, self.y, self.z)
+
+class Block(BaseObject):
+    def shatter(self):
+        self.x = None
+        self.y = None
+        self.z = None
+    
+class Entity(BaseObject):
+    def move(self, x, y, z):
+        self.x = x
+        self.y = y
+        self.z = z
+
+
+class Thing(BaseObject):
+    pass
+
+#№ 2
+
+class User:
+    def solve(self, n):
+        pass
+ 
+
+class Student(User):
+    pass
+
+ 
+class Teacher(User):
+    def check_solution(self, user, n):
+        pass
+ 
+class Admin(User):
+    def edit(self, n):
+        pass
+ 
+class SuperAdmin(Admin):
+    def grant(self, user):
+        pass
+
+#№ 3
+
+class User:
+    def __init__(self, name):
+        self.name = name
+    def send_message(self, user, message):
+        pass
+    def post(self, message):
+        pass
+    def info(self):
+        return ''
+    def describe(self):
+        print(self.name)
+        print(self.info)
+
+class Person(User):
+    def __init__(self, name, date):
+        super().__init__(name)
+        self.name = name
+        self.date = date
+    def info(self):
+        return f'Дата рождения: {self.date}'
+    def subscribe(self, user):
+        pass
+
+class Community(User):
+    def __init__(self, name, discri):
+        super().__init__(name)
+        self.name = name
+        self.discri = discri
+    def info(self):
+        return f'Описание: {self.discri}'
+
+#№ 4
+
+class Summator:
+    def transform(self, n):
+        return n
+    def sum(self, N):
+        summ = 0
+        for i in range(N + 1):
+            summ += self.transform(i)
+        return summ
+
+class SquareSummator(Summator):
+    def __init__(self):
+        pass
+    def transform(self, n):
+        return n ** 2
+
+class CubeSummator(Summator):
+    def __init__(self):
+        pass
+    def transform(self, n):
+        return n ** 3
+
+class PowerSummator(Summator):
+    def __init__(self, b):
+        self.b = b
+    def transform(self, n):
+        return n ** self.b
+
+#№ 5
+
+class Profile:
+    def __init__(self, prof):
+        self.prof = prof   
+    def info(self):
+        return ''      
+    def describe(self):
+        print(self.prof, self.info())
+        
+        
+class Vacancy(Profile):
+    def __init__(self, name_prof, salary):
+        super().__init__(name_prof)
+        self.salary = salary       
+    def info(self):
+        return f'Предлагаемая зарплата: {self.salary}'
+      
+      
+class Resume(Profile):
+    def __init__(self, name_prof, experience):
+        super().__init__(name_prof)
+        self.experience = experience
+    def info(self):
+        return f'Стаж работы: {self.experience}'
+
+
+#№ 6
+
+class A:
+    def __str__(self):
+        return 'A.__str__ method' 
+    def hello(self):
+        print('Hello') 
+ 
+class B:
+    def __str__(self):
+        return 'B.__str__ method' 
+    def good_evening(self):
+        print('Good evening') 
+ 
+class C(A, B):
+    pass
+  
+class D(B, A):
+    pass
+
+
+
+
+# c = C()
+# c.hello()
+# c.good_evening()
+# d = D()
+# d.hello()
+# d.good_evening()
+# print(c)
+# print(d)
+
+def new_method(arg):
+    return  'new method'
+
+def new_method2(arg):
+    return 'new method 2'
+
+
+# A.__str__ = new_method
+# B.__str__ = new_method2
+# c = C()
+# c.hello()
+# c.good_evening()
+# d = D()
+# d.hello()
+# d.good_evening()
+# print(isinstance(c, A), isinstance(c, B))
+# print(isinstance(d, A), isinstance(d, B))
+# print(c)
+# print(d)
+
+#№ 7
+
+class Weapon():
+    def __init__(self, name, damage, range):
+        self.name = name
+        self.damage = damage
+        self.range = range
+ 
+    def hit(self, actor, target):
+        if target.is_alive():
+            if ((target.pos_x - actor.pos_x) ** 2 +
+                    (target.pos_y - actor.pos_y) ** 2 <= self.range ** 2):
+                print(f'Врагу нанесен урон оружием {self.name} в размере {self.damage}')
+                target.hp -= self.damage
+            else:
+                print(f'Враг слишком далеко для оружия {self.name}')
+        else:
+            print('Враг уже повержен')
+ 
+    def __str__(self):
+        return self.name
+ 
+ 
+class BaseCharacter:
+    def __init__(self, x, y, hp):
+        self.pos_x = x
+        self.pos_y = y
+        self.hp = hp
+ 
+    def move(self, delta_x, delta_y):
+        self.pos_x += delta_x
+        self.pos_y += delta_y
+ 
+    def is_alive(self):
+        return self.hp > 0
+ 
+    def get_damage(self, amount):
+        if self.is_alive():
+            self.hp -= amount
+ 
+    def get_coords(self):
+        return (self.pos_x, self.pos_y)
+ 
+ 
+class BaseEnemy(BaseCharacter):
+    def __init__(self, pos_x, pos_y, weapon, hp):
+        super().__init__(pos_x, pos_y, hp)
+        self.weapon = weapon
+ 
+    def hit(self, target):
+        if target.__class__.__name__ == 'MainHero':
+            self.hit(self, target)
+        else:
+            print('Могу ударить только Главного героя')
+ 
+    def __str__(self):
+        return f'Враг на позиции ({self.pos_x}, {self.pos_y}) с оружием {self.weapon.name}'
+ 
+ 
+class MainHero(BaseCharacter):
+    def __init__(self, pos_x, pos_y, name, hp):
+        super().__init__(pos_x, pos_y, hp)
+        self.name = name
+        self.weapons = []
+        self.now_weapon = 0
+ 
+    def hit(self, target):
+        if self.weapons:
+            if target.__class__.__name__ == 'BaseEnemy':
+                self.weapons[self.now_weapon].hit(self, target)
+            else:
+                print('Могу ударить только врага')
+        else:
+            print('Я безоружен')
+ 
+    def add_weapon(self, weapon):
+        if weapon.__class__.__name__ == 'Weapon':
+            self.weapons.append(weapon)
+            print(f'Подобрал {weapon}')
+        else:
+            print('Это не оружие')
+ 
+    def next_weapon(self):
+        if len(self.weapons) == 1:
+            print('У меня только одно оружие')
+        elif len(self.weapons) > 1:
+            self.now_weapon += 1
+            if self.now_weapon == len(self.weapons):
+                self.now_weapon = 0
+            print(f'Сменил оружие на {self.weapons[self.now_weapon]}')
+        else:
+            print('Я безоружен')
+ 
+    def heal(self, amount):
+        self.hp += amount
+        if self.hp > 200:
+            self.hp = 200
+        print(f'Полечился, теперь здоровья {self.hp}')
+
+
+# weapon1 = Weapon("Короткий меч", 5, 1)
+# weapon2 = Weapon("Длинный меч", 7, 2)
+# weapon3 = Weapon("Лук", 3, 10)
+# weapon4 = Weapon("Лазерная орбитальная пушка", 1000, 1000)
+# princess = BaseCharacter(100, 100, 100)
+# archer = BaseEnemy(50, 50, weapon3, 100)
+# armored_swordsman = BaseEnemy(10, 10, weapon2, 500)
+# archer.hit(armored_swordsman)
+# armored_swordsman.move(10, 10)
+# print(armored_swordsman.get_coords())
+# main_hero = MainHero(0, 0, "Король Артур", 200)
+# main_hero.hit(armored_swordsman)
+# main_hero.next_weapon()
+# main_hero.add_weapon(weapon1)
+# main_hero.hit(armored_swordsman)
+# main_hero.add_weapon(weapon4)
+# main_hero.hit(armored_swordsman)
+# main_hero.next_weapon()
+# main_hero.hit(princess)
+# main_hero.hit(armored_swordsman)
+# main_hero.hit(armored_swordsman)
+
+
+class Drawer:
+    def __init__(self, draw_map, cell_size):
+        self.draw_map = draw_map
+        self.cell_size = cell_size
+        self.count = 0
+        self.dic = {i : i for i in range(1, self.count + 1)}
+    def numbers(self):
+        new = []
+        for elem in self.draw_map:
+            for el in elem:
+                new.append(el)
+        return sorted(new)
+    def set_color(self, number, color):
+        self.dic[number] = color
+        self.count += 1
+    def set_cell_size(self, cell_size):
+        self.cell_size = cell_size
+    def size(self):
+        self.width = self.cell_size
+        self.height = self.cell_size
+        return (self.width, self.height)
+    def draw(self):
+        main = Tk()
+        canvas = Canvas(main, width = 250, height = 250, bg = "white")
+        x1 = 50
+        x = 50
+        y1 = 50
+        y = 50
+        a = 1
+        for i in range(1, self.count + 1):
+            canvas.create_rectangle(x1, y1, x1 + self.width, y1 + self.height, fill = self.dic[i], outline='black')
+            if a < self.count ** 0.5:
+                x1 = x1 + self.width
+                a += 1
+            else:
+                x1 = x
+                y1 = y1 + self.height
+                a = 1
+        canvas.pack()
+        main.mainloop()
+        
+
+# a = Drawer([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 20)
+# a.numbers()
+# a.set_color(1, 'black')
+# a.set_color(2, 'red')
+# a.set_color(3, 'orange')
+# a.set_color(4, 'yellow')
+# a.set_color(5, 'green')
+# a.set_color(6, 'lightblue')
+# a.set_color(7, 'blue')
+# a.set_color(8, 'violet')
+# a.set_color(9, 'white')
+# # a.set_color(10, 'black')
+# # a.set_color(11, 'black')
+# # a.set_color(12, 'black')
+# # a.set_color(13, 'black')
+# # a.set_color(14, 'black')
+# # a.set_color(15, 'black')
+# # a.set_color(16, 'black')
+# a.set_cell_size(40)
+# a.size()
+# a.draw()

@@ -1,0 +1,75 @@
+
+//
+//  Программа отображения диалога _Dlg_
+//
+
+(prog nil
+
+      (dlgCreate '_Dlg_ 362 250 "Проба пера...")
+
+      (dlgAddControl '_Dlg_ '_TXT_1 _TEXT 6 7 194 26 '("Tahoma" 12 1 0 0) "" 0 &H80000008 &H80000005)
+
+      (dlgAddControl '_Dlg_ '_BUT_1 _BUTTON 208 5 141 29 '("Tahoma" 8,25 1 0 0) "Вычислить")
+
+      (dlgAddControl '_Dlg_ '_TXT_2 _TEXT 6 40 343 116 '("Tahoma" 8 1 0 0) "" 0 &H80000008 &H80000005)
+
+      (dlgAddControl '_Dlg_ '_BUT_2 _BUTTON 90 167 200 43 '("Tahoma" 8,25 1 0 0) "Закрыть")
+
+      //
+      // Обработчик события CLICK для кнопки _BUT_2
+      //
+
+      (defun _BUT_2_Click  Nil 
+
+          (dlgHide '_DLG_)
+
+      )
+
+
+      //
+      //   Назначение процедуры-события _BUT_2_Click  контролу _BUT_2
+      //
+
+      (dlgSetEvent '_BUT_2 '_BUT_2_Click )
+
+      //
+      // Обработчик события CLICK для кнопки _BUT_1
+      //
+
+      (defun _BUT_1_Click  Nil 
+
+               (PROG (x y)
+
+                     (setq x (str2fix (dlgGetText '_TXT_1)))
+
+                     (TRY
+
+                           (setq y (fact x))
+                       
+                      EXCEPT
+
+                           (setq y "Ошибка при вычислении!")
+
+                     )
+        
+                     (dlgPutText '_TXT_2   // идентификатор контрола 
+                                  y        // устанавливаемый текст
+                     )
+
+                )                        
+
+      )
+
+
+      //
+      //   Назначение процедуры-события _BUT_1_Click  контролу _BUT_1
+      //
+
+      (dlgSetEvent '_BUT_1 '_BUT_1_Click )
+
+      //
+      //   Отображение диалога _Dlg_
+      //
+
+      (dlgShow '_Dlg_)
+)

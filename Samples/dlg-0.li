@@ -1,0 +1,43 @@
+;;
+;;  Простейший диалог
+;;
+;;  Файфель Б.Л. 
+;;
+
+//
+//  Программа отображения диалога _Dlg_
+//
+
+(prog nil
+
+      (dlgCreate '_Dlg_ 329 262 "Проба")
+
+      (dlgAddControl '_Dlg_ '_BUT_1 _BUTTON 39 48 256 128 '("Tahoma" 14,25 1 0 0) "Нажми")
+      (dlgPutPicture '_BUT_1 2)
+
+      //
+      // Обработчик события CLICK для кнопки _BUT_1
+      //
+
+      (defun _BUT_1_Click  Nil 
+
+          (prog nil
+
+              (say 'Привет!!!!)
+              (dlgHide '_Dlg_)
+          ) 
+
+      )
+
+      //
+      //   Назначение процедуры-события _BUT_1_Click  контролу _BUT_1
+      //
+
+      (dlgSetEvent '_BUT_1 '_BUT_1_Click )
+
+      //
+      //   Отображение диалога _Dlg_
+      //
+
+      (dlgShow '_Dlg_)
+)

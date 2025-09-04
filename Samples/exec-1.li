@@ -1,0 +1,12 @@
+;;
+;;  Упаковка 32-х битным Arj
+;;
+;;  Файфель Б.Л.
+;;
+
+(setq Rc (sysExec "arj32.exe" "a all_lisp.arj *.li *.lsp" 1))
+
+(cond ((= RC 0) (say 'Успешно!))
+      (T        (say (strcat "Ошибка RC=" (fix2str RC)))))
+
+

@@ -1,0 +1,3 @@
+
+(SMACRO cpl ( LAMBDA (x)(COND ((NULL x) NIL)(T (LIST (QUOTE CONS)(LIST (QUOTE QUOTE)(CAR x))(LIST (QUOTE cpl)(CDR x)))))) )
+

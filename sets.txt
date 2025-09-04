@@ -1,0 +1,67 @@
+(DEFUN MY_LEN(L)
+    (COND
+       ((NULL L) 0)
+       (T (+ 1 (MY_LEN(CDR L))))
+	)
+)
+
+(defun on_all_place (E L R) 
+(cond
+ ((null R) (list (append L (cons e nil))))
+ (T (cons (append L (cons E R))
+          (on_all_place 
+            E 
+            (append L (list (car R))) 
+            (cdr R)
+          )
+ ))))
+
+(defun f1 (e l) 
+    (on_all_place E nil l))
+
+(defun f2 (e l) 
+    (cond
+        ((null l) l)
+        (T (append (f1 e (car l)) (f2 e (cdr l))))
+))
+
+(defun all_permutations (n) 
+    (cond
+        ((null n) (list nil))
+        (T (f2 (car n) (all_permutations (cdr n))))
+))
+
+;(print (all_permutations '(1 2 34 7 3)))
+
+(defun foreach (e l) 
+    (cond
+        ((null l) nil)
+        (T (cons (cons e (list(car l))) (foreach e (cdr l))))
+)
+)
+
+;(print (foreach 4 '(1 2)))
+
+
+(defun all_subsets (l) 
+    (cond
+        ((null l) nil)
+        (T (cons (all_subsets (cdr l)) (foreach (car l)  (cdr l))))
+)
+)
+
+(print (all_subsets '(1 2)))
+;(defun f4 (n r) 
+;    (cond
+;        ((null n) r)
+;        (T (f4 (cdr n) (cons (list (car n)) r)))
+;))
+
+;(print (f4 '(1 2 3) nil))
+;(print (all_k_subsets '(1 2 4 53) 2))
+;(defun all_k_subsets (n k) 
+;    (cond
+;        ((= 1 k) (f4 n nil))
+;        ((= k (my_len n)) (all_permutations n))
+;        (T (all_k_subsets (cdr n) k))
+;))

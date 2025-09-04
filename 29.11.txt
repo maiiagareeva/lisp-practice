@@ -1,0 +1,512 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;cnk через фаториал и через комбинаторную формулу
+
+(DEFUN FACT(N) 
+    (COND 
+        ((= N 0) 1) 
+        (T (* N (FACT (- N 1)))) 
+ )) 
+ 
+(DEFUN cnk(n k) 
+    (COND  
+         ((= n k) 1) 
+         (T (/ (fact n) (* (fact k) (fact (- n k))))) 
+) 
+)      
+
+;(print (cnk 5 4))
+ 
+ 
+(DEFUN cnk1(n k) 
+    (COND  
+        ((OR (= n k)  (= k 0)) 1) 
+        (T (+ (cnk1 (- n 1) k) (cnk1 (- n 1) (- k 1)))) 
+    ) 
+)      
+
+;(print (cnk1 5 4))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;катая строка треугольника Паскаля, начиная с итого элемента
+
+(DEFUN stroka (k i) 
+    (COND 
+        ((= i k) '(1)) 
+        (T (CONS (CNK i k) (stroka (+ k 1) i))) 
+) 
+) 
+
+;(print (stroka 0 5))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;треугольник Паскаля до нной строки
+
+(DEFUN triangle(n) 
+    (COND 
+        ((= 0 n) (printline '(1))) 
+        (T (triangle (- n 1)) (printline (stroka 0 n))) 
+) 
+)
+;(print (triangle 5))
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+;начало списка
+
+(DEFUN MY_BEGIN(L)
+    (COND
+      ((NULL(CDR L)) NIL)
+      (T (CONS (CAR L) (MY_BEGIN (CDR L))))
+    )
+)
+;(print (MY_BEGIN '(1 3 6)))
+
+;;;;;;;;;;;;;;;;;;;;
+
+;проверка на вхождение элемента в список
+
+(DEFUN MY_MEMBER (X L)
+   (COND 
+     ((NULL L) NIL) 
+     ((= (CAR L) X) T)
+     (T (MY_MEMBER X (CDR L)))
+)
+)
+
+;(print (MY_MEMBER 4 '(1 2 3 4)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;длина списка
+
+(DEFUN MY_LEN(L)
+    (COND
+       ((NULL L) 0)
+       (T (+ 1 (MY_LEN(CDR L))))
+	)
+)
+;(print (MY_LEN '(1 NIL 3 6)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;последний элемент списка
+
+(DEFUN MY_LAST(L)
+    (COND
+       ((NULL (CDR L)) (CAR L))
+       (T (MY_LAST(CDR L)))
+	)
+)
+;(print (MY_LAST '(1 NIL 3 6)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;переворачиваем список
+
+(DEFUN MY_REVERSE(L)
+	(COND
+	((NULL L) NIL)
+	(T (CONS(MY_LAST L) (MY_REVERSE(MY_BEGIN L))))
+)
+)
+;(print (MY_REVERSE '(1 NIL 3 6)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;считаем кол-во атомов в списке
+
+(DEFUN COUNT_ATOMS(L)
+    (COND
+    ((NULL L) 0)
+    ((ATOM(CAR L)) (+ 1 (COUNT_ATOMS(CDR L))))
+    (NOT (COUNT_ATOMS(CDR L)))
+)
+)
+;(print (COUNT_ATOMS '(1 NIL 3 6)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;составляем новый список, состоящий только из атомов исходного
+
+(DEFUN ONLY_ATOMS(L)
+	(COND
+	((NULL L) NIL)
+	((ATOM(CAR L)) (CONS(CAR L) (ONLY_ATOMS(CDR L))))
+	(T (ONLY_ATOMS(CDR L)))
+)
+)
+;(print (ONLY_ATOMS '(1 NIL 3 6)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;вставляем элемент в упорядоченный список
+
+(DEFUN INTO_SORT(X L)
+	(COND
+	((NULL L) (CONS X NIL))
+	((<= X (CAR L)) (CONS X L))
+	(T (CONS (CAR L) (INTO_SORT X (CDR L))))
+)
+)
+;(print (INTO_SORT 5 '(1 3 6)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;сортировка списка
+
+(DEFUN MY_SORT(L)
+	(COND
+	((NULL L) NIL)
+	(T (INTO_SORT (CAR L) (MY_SORT(CDR L))))
+)
+)
+;(print (MY_SORT '(7 2 3)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;слияние двух списков в один
+
+(DEFUN MY_MERGE(A L)
+	(COND
+	((NULL A) L)
+	((NULL (CDR A))  (INTO_SORT (CAR A) L))
+	(T (MY_MERGE (CDR A) (INTO_SORT (CAR A) L)))
+)
+)
+;(print (MY_MERGE '(7 2 3) '(1 4 5)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;слияние двух упорядоченных списков в один
+
+(DEFUN MY_MERGE_SORT_LISTS(A L)
+	(COND
+     ((NULL A) (MY_SORT L))
+     (T (MY_SORT(CONS (CAR (MY_SORT A)) (MY_MERGE (CDR (MY_SORT A)) (MY_SORT L)))))
+)
+)
+;(print (MY_MERGE_SORT_LISTS '(7 2 3) '(1 4 5)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;минимальный элемент списка
+
+(DEFUN MIN_LIST(L)
+	(COND
+	((NULL (CDR L)) (CAR L))
+	((>=   (CAR L) (MIN_LIST(CDR L))) (MIN_LIST(CDR L)))
+	(T (CAR L) )
+)
+)
+;(print (MIN_LIST '(4 5 1)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;сумма всех элементов списка
+
+(DEFUN SUM_LIST(L)
+	(COND
+	((NULL L) 0)
+	(T (+ (CAR L) (SUM_LIST (CDR L))))
+)
+)
+;(print (SUM_LIST '(4 5 6)))
+
+;;;;;;;;;;;;;;;;;;;;
+
+;удалить элемент из списка
+
+(DEFUN ONION(X L)
+	(COND
+	((NULL L) NIL)
+	((= X (CAR L)) (ONION X (CDR L)))
+	(T (CONS (CAR L) (ONION X (CDR L))))
+)
+)
+;(print (ONION 6 '(4 5 6)))
+
+;;;;;;;;;;;;;;
+
+;кол-во делителей числа
+
+(DEFUN COUNT_DEL1 (N C)
+    (COND
+       ((= C N) 0)
+       ((= (MOD N C) 0) (+ 1 (COUNT_DEL1 N (+ 1 C))))
+       (T (COUNT_DEL1 N (+ 1 C)))
+ )
+)
+
+(DEFUN COUNT_DEL (N)
+     (+ 1 (COUNT_DEL1 N 1))
+)
+;;;;;;;;;;;;;;;;;;;;;;
+
+;является ли число простым
+
+(DEFUN IS_PRIME (N)
+    (COND
+       ((> (COUNT_DEL1 N 1) 1) NIL)
+       (T T)
+ )
+)
+
+;;;;;;;;;;;;
+;сумма делителей числа
+
+(DEFUN SUMM_DEL1 (N C)
+    (COND
+       ((= C N) 0)
+       ((= (MOD N C) 0) (+ C (SUMM_DEL1 N (+ 1 C))))
+       (T (SUMM_DEL1 N (+ 1 C)))
+ )
+)
+
+
+(DEFUN SUMM_DEL (N)
+     (+ N (SUMM_DEL1 N 1))
+)
+;;;;;;;;;;
+;все простые числа на отрезке списком
+
+(DEFUN ALL_PRIMES (A B)
+    (COND
+       ((= A B) NIL)
+       ((= 1 A) (ALL_PRIMES (+ 1 A) B))
+       ((IS_PRIME A) (INTO_SORT A (ALL_PRIMES (+ 1 A) B)))
+       (T (ALL_PRIMES (+ 1 A) B))
+ )
+)
+;;;;;;;;;;;
+;все совершенные числа на отрезке списком
+
+(DEFUN ALL_IDEALS (A B)
+    (COND
+       ((= A B) NIL)
+       ((= A (- (SUMM_DEL A) A)) (INTO_SORT A (ALL_IDEALS (+ 1 A) B)))
+       (T (ALL_IDEALS (+ 1 A) B))
+ )
+)
+
+;;;;;
+;проверка на вхождение элемента в список
+
+;если список пустой, то проверяемый элемент не входит в список
+;если голова списка равна элементу, то элемент входит в список
+;иначе вернуть работу работу функции над элементом и хвостом списка
+
+(DEFUN IN(X L)
+	(COND
+	((NULL L) NIL)
+	((= (CAR L) X) T)
+	(T (IN X (CDR L)))
+)
+)
+;;;;;;;;;;;
+;проверка на: является ли список множеством
+
+;если список пустой, то вернуть True
+;если голова списка входит в хвост списка, то вернуть False
+;иначе вернуть работу функции над хвостом списка
+;;;;;;;;;
+(DEFUN ISSET(L)
+	(COND
+	((NULL L) T)
+	((IN (CAR L) (CDR L)) NIL)
+	(T (ISSET (CDR L)))
+)
+)
+;;;;;;;;;;;
+;функция, превращающая список l в множество
+
+;если список пустой, то вернуть пустой список
+;если голова списка входит в хвост списка, то удалить все элементы головы из хвоста списка
+;иначе вернуть объединение головы и работы функции над хвостом списка
+;;;;;;
+(DEFUN INTO_SET(L)
+	(COND
+	((NULL L) L)
+	((IN (CAR L) (CDR L)) (INTO_SET (CDR L)))
+	(T (CONS (CAR L) (INTO_SET (CDR L))))
+)
+)
+;;;;;;;;;;;;;
+;является ли список l подмножеством списка a
+
+;если первый список пустой то вернуть True
+;если голова первого списка входит во второй список, то вернуть работу функции над хвостом первого списка и вторым списком
+;иначе вернуть False
+;;;;;;
+(DEFUN IS_SUBSET(L A)
+	(COND
+	((NULL L) T)
+	((IN (CAR L) A) (IS_SUBSET (CDR L) A))
+	(T NIL)
+)
+)
+;;;;;;
+;проверка множеств на равенство
+
+;если длина первого списока равна длине второго списка, то вернуть работу функции над первым списком и вторым списком
+;иначе вернуть False
+;;;;;
+(DEFUN EQ_SET(L A)
+	(COND
+	((= (MY_LEN L) (MY_LEN A)) (IS_SUBSET L A))
+        (T NIL)
+)
+)
+;;;;;;;;;;;;;;;;
+;объединение двух списков
+
+;если первый список пустой, то вернуть второй список
+;если второй список пустой, то вернуть первый список
+;если последний элемент первого списка входит во второй список, то вернуть работу функции над началом первого списка и вторым списком
+;иначе вернуть работу функции над началом первого списка и объединением последнего элемента первого списка и целого второго списка
+;;;;;
+(DEFUN LIST_UNION(L A)
+	(COND
+	((NULL L) A)
+	((NULL A) L)
+	((IN (MY_LAST L) A) (LIST_UNION (MY_BEGIN L) A))
+	(T (LIST_UNION (MY_BEGIN L) (CONS (MY_LAST L) A)))
+)
+)
+;;;;;;;;;;;;;;;;
+;пересечение двух списков
+
+;если первый список пустой, то вернуть пустой список
+;если второй список пустой, то вернуть пустой список
+;если голова первого списка входит во второй список, то вернуть объединение головы первого списка и работу функции над хвостом первого списка и целым вторым списком
+;иначе вернуть работу функции над хвостом первого списка и целым вторым списком
+;;;;;;
+(DEFUN LIST_CROSS(L A)
+	(COND
+	((NULL L) NIL)
+	((NULL A) NIL)
+	((IN (CAR L) A) (CONS (CAR L) (LIST_CROSS (CDR L) A)))
+	(T (LIST_CROSS (CDR L) A))
+)
+)
+;удаление элемента из списка
+
+(DEFUN LIST_REMOVE(ELEM L)
+	(COND
+	((NULL L) NIL)
+	((= (CAR L) ELEM) (LIST_REMOVE ELEM (CDR L)))
+	(T (CONS (CAR L) (LIST_REMOVE ELEM (CDR L))))
+)
+)
+;симметрическая разность двух списков-множеств
+
+;если первый список пустой, то вернуть второй список
+;если второй список пустой, то вернуть первый список
+;если голова первого списка входит во второй список, то вернуть работу функции над хвостом первого списка и вторым списком, из которого удалили проверяемый элемент
+;иначе вернуть объединение головы первого списка и работы функции над хвостом первого списка и вторым списком
+(DEFUN LIST_S_DIFFERENCE(L A)
+	(COND
+	((NULL L) A)
+	((NULL A) L)
+	((IN (CAR L) A) (LIST_S_DIFFERENCE (CDR L) (LIST_REMOVE (CAR L) A)))
+	(T (CONS (CAR L) (LIST_S_DIFFERENCE (CDR L) A)))
+)
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(DEFUN FIRST_COL(L)
+    (COND
+        ((NULL L) NIL)
+        (T (CONS (CAR (CAR L)) (FIRST_COL (CDR L))))
+	)
+)
+;(print (FIRST_COL '((1 2 3 4)(51 6 75 8)(92 23 4 3))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(DEFUN WITHOUT_1_COL(L)
+    (COND
+        ((NULL L) NIL)
+        (T (CONS (CDR (CAR L)) (WITHOUT_1_COL (CDR L))))
+	)
+)
+;(print (WITHOUT_1_COL '((1 2 3 4)(51 6 75 8)(92 23 4 3))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(DEFUN TRANS(L)
+    (COND
+        ((NULL (CAR L)) NIL)
+        (T (CONS (FIRST_COL L) (TRANS (WITHOUT_1_COL L))))
+	)
+)
+;(print (TRANS '((1 2)(3 4)(5 6))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(DEFUN SUMM_LINE(A B)
+    (COND
+        ((OR (NULL B) (NULL A)) NIL)
+        (T (CONS (+ (CAR A) (CAR B)) (SUMM_LINE (CDR A) (CDR B))))
+	)
+)
+;(print (SUMM_LINE '(1 2 3) '(1 2 3)))
+
+;сумма матриц
+
+(DEFUN MSUM(L1 L2)
+    (COND
+        ((NULL L1) NIL)
+        ((NULL L2) NIL)
+        (T (CONS (SUMM_LINE (CAR L1) (CAR L2)) (MSUM (CDR L1) (CDR L2))))
+	)
+)
+;(print (MSUM '((1 2 3)(4 5 6)) '((1 1 1)(1 1 1))))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;единичная матрица
+
+(DEFUN F(N)
+    (COND
+        ((= 1 N) NIL)
+        (T (CONS 0 (F (- N 1))))
+
+	)
+)
+
+(DEFUN M_O(L K)
+    (COND
+        ((= K 0) NIL)
+        (T (CONS (APPEND (CDR L) (LIST 0)) (M_O (APPEND (CDR L) (LIST 0)) (- K 1))))
+	)
+)
+
+(DEFUN Q(N)
+    (MY_REVERSE(CONS (APPEND (F N) (LIST 1)) (M_O (APPEND (F N) (LIST 1)) (- N 1))))
+)
+;(print (Q 4))
+;(print (M_O '(0 0 0 1) 3))
+;(print (M_O 3))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(DEFUN F1(N)
+    (COND
+        ((= 0 N) NIL)
+        (T (CONS 1 (F1 (- N 1))))
+
+	)
+)
+
+(DEFUN M_T1(L K)
+    (COND
+        ((= K 0) NIL)
+        (T (CONS (APPEND (CDR L) (LIST 0)) (M_O (APPEND (CDR L) (LIST 0)) (- K 1))))
+	)
+)
+
+;нижняя треугольная матрица
+
+(DEFUN Q1(N)
+    (MY_REVERSE(CONS (F1 N) (M_T1 (F1 N) (- N 1))))
+)
+;(print (Q1 3))

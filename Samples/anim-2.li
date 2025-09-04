@@ -1,0 +1,110 @@
+;;
+;;   Простая анимация - шарик в квадрате
+;;   "+" - ускорить
+;;   "-" - замедлить
+;;   Esc - закрыть
+;;
+;;   Файфель Б.Л. 
+;;
+
+(grwCreate 'w 300 300 "Анимация" &HFFFFFF)
+
+(grwShow 'w)
+
+(grwScale 'w -105 105 -105 105)
+
+(prog (x1 y1 x2 y2 vx vy k)
+
+      (setq x1 0)
+      (setq y1 0)
+
+  @vx 
+      (setq vx (rnd 10.0))
+      (cond ((<= (abs vx) 1.0) (go @vx)))
+
+  @vy
+      (setq vy (rnd 10.0))
+      (cond ((<= (abs vy) 1.0) (go @vy)))
+
+      (grwSetParm  'w    // идентификатор окна
+                   1     // ширина линий
+                   0     // стиль заливки
+                 _RED    // цвет заливки  
+               _WHITE    // цвет переднего плана
+       )
+
+      (grwCircle 'w      // идентификатор окна
+                 x1      // X центра
+                 y1      // Y центра
+                  5       // Радиус
+                _RED    // цвет
+       )
+
+ Loop 
+       
+      (setq x2 (+ x1 (* vx 3)))
+
+      (setq y2 (+ y1 (* vy 3)))
+
+      (grwSetParm  'w    // идентификатор окна
+                    1    // ширина линий
+                    0    // стиль заливки
+               _WHITE    // цвет заливки  
+               _WHITE    // цвет переднего плана
+       )
+
+
+      (grwCircle 'w      // идентификатор окна
+                 x1      // X центра
+                 y1      // Y центра
+                  5      // Радиус
+             _WHITE      // цвет
+      ) 
+
+      (grwSetParm  'w    // идентификатор окна
+                    1    // ширина линий
+                    0    // стиль заливки
+                 _RED    // цвет заливки  
+               _WHITE    // цвет переднего плана
+       )
+
+
+      (grwCircle  ' w    // идентификатор окна
+                   x2    // X центра
+                   y2    // Y центра
+                    5    // Радиус
+                 _RED    // цвет
+      )
+
+      (grwRefresh 'w 3)
+
+      (setq k (grwInkey 'w))
+
+      (cond ((eq k 27)  (return k))
+            ((eq k 109) (prog nil (setq vx (* 0.75 vx)) (setq vy (* 0.75 vy)) ))
+            ((eq k 107) (prog nil (setq vx (* 1.25 vx)) (setq vy (* 1.25 vy)) )))
+
+      (cond ((greaterp x2 95) (setq vx (- 0 vx))))
+
+      (cond ((greaterp y2 95) (setq vy (- 0 vy))))
+
+      (cond ((lessp x2 -95) (setq vx (- 0 vx))))
+
+      (cond ((lessp y2 -95) (setq vy (- 0 vy))))
+      
+      (setq x1 x2)
+
+      (setq y1 y2) 
+
+      (go Loop)
+
+)
+
+(gc)
+
+(grwCls 'w)
+
+(grwDestroy 'w)
+
+
+ 

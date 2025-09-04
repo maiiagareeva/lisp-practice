@@ -1,0 +1,253 @@
+class LittleBell:
+    def sound(self):
+        print('ding')
+
+
+'''bell = LittleBell()
+bell.sound()
+bell.sound()
+bell.sound()'''
+
+class Button:
+    def __init__(self):
+        self.sum = 0
+    def click(self):
+        self.sum += 1
+    def click_count(self):
+        return self.sum
+    def reset(self):
+        self.sum = 0
+
+
+'''button = Button()
+button.click()
+button.click()
+print(button.click_count())
+button.click()
+print(button.click_count())'''
+'''button = Button()
+button.click()
+button.click()
+print(button.click_count())
+button.reset()
+button.click()
+print(button.click_count())'''
+
+class Balance:
+    def __init__(self):
+        self.weight_on_right = 0
+        self.weight_on_left = 0
+    def add_right(self, weight):
+        self.weight_on_right += weight
+    def add_left(self, weight):
+        self.weight_on_left += weight
+    def result(self):
+        if self.weight_on_right == self.weight_on_left:
+            return '='
+        elif self.weight_on_right > self.weight_on_left:
+            return 'R'
+        else:
+            return 'L'
+
+'''balance = Balance()
+balance.add_right(10)
+balance.add_left(9)
+balance.add_left(2)
+print(balance.result())'''
+'''balance = Balance()
+balance.add_right(10)
+balance.add_left(5)
+balance.add_left(5)
+print(balance.result())
+balance.add_left(1)
+print(balance.result())'''
+
+
+
+
+class OddEvenSeparator:
+    def __init__(self):
+        self.lis = []
+        self.ev = []
+        self.od = []
+    def add_number(self, number):
+        self.lis.append(number)
+    def even(self):
+        for elem in self.lis:
+            if elem % 2 == 0:
+                self.ev.append(elem)
+        return self.ev
+    def odd(self):
+        for elem in self.lis:
+            if elem % 2 != 0:
+                self.od.append(elem)
+        return self.od
+
+
+'''separator = OddEvenSeparator()
+separator.add_number(1)
+separator.add_number(5)
+separator.add_number(6)
+separator.add_number(8)
+separator.add_number(3)
+print(' '.join(map(str, separator.even())))
+print(' '.join(map(str, separator.odd())))'''
+
+
+
+class BigBell:
+    def __init__(self):
+        self.sou = 'ding'
+    def sound(self):
+        print(self.sou, end='')
+        if self.sou == 'ding':
+            self.sou = 'dong'
+        else:
+            self.sou = 'ding'
+
+
+'''bell = BigBell()
+bell.sound()
+bell.sound()
+bell.sound()
+bell.sound()
+bell.sound()
+bell.sound()'''
+
+
+class MinMaxWordFinder:
+    def __init__(self):
+        self.senten = []
+        self.lenn = {}
+        self.add_min = []
+        self.add_max = []
+    def add_sentence(self, text_sent):
+        self.senten.extend(text_sent.split())
+    def shortest_words(self):
+        self.senten = self.senten
+        for elem in self.senten:
+            self.lenn[elem] = len(elem)
+        for elem in self.senten:
+            if len(elem) == min(self.lenn.values()):
+                self.add_min.append(str(elem))
+        return sorted(self.add_min)
+    def longest_words(self):
+        self.senten = self.senten
+        for elem in self.senten:
+            self.lenn[elem] = len(elem)
+        for elem in self.senten:
+            if len(elem) == max(self.lenn.values()):
+                self.add_max.append(str(elem))
+        return list(sorted(set(self.add_max)))
+
+
+'''finder = MinMaxWordFinder()
+finder.add_sentence('hello')
+finder.add_sentence('abc')
+finder.add_sentence('world')
+finder.add_sentence('def')
+finder.add_sentence('asdf')
+finder.add_sentence('qwert')
+print(' '.join(finder.shortest_words()))
+print(' '.join(finder.longest_words()))'''
+
+
+
+class BoundingRectangle:
+    def __init__(self):
+        self.xx = []
+        self.yy = []
+        self.widd = []
+    def add_point(self, x, y):
+        self.xx.append(x)
+        self.yy.append(y)
+    def width(self):
+        return max(self.xx) - min(self.xx)
+    def height(self):
+        return max(self.yy) - min(self.yy)
+    def bottom_y(self):
+        return min(self.yy)
+    def top_y(self):
+        return max(self.yy)
+    def left_x(self):
+        return min(self.xx)
+    def right_x(self):
+        return max(self.xx)
+
+
+'''rect = BoundingRectangle()
+rect.add_point(-11, -12)
+rect.add_point(13, -14)
+rect.add_point(-15, 10)
+print(rect.left_x(), rect.right_x())
+print(rect.bottom_y(), rect.top_y())
+print(rect.width(), rect.height())
+print()
+rect.add_point(-21, -12)
+rect.add_point(13, -14)
+rect.add_point(-15, 36)
+print(rect.width(), rect.height())
+print(rect.left_x(), rect.right_x())
+print(rect.bottom_y(), rect.top_y())
+print()
+rect.add_point(-21, 78)
+rect.add_point(13, -14)
+rect.add_point(-55, 36)
+print(rect.bottom_y(), rect.top_y())
+print(rect.width(), rect.height())
+print(rect.left_x(), rect.right_x())
+print()'''
+
+
+
+class SeaMap:
+    def __init__(self):
+        self.map = [['.' for j in range(10)] for i in range(10)]
+    def shoot(self, row, col, result):
+        if result == 'miss':
+            self.map[row][col] = '*'
+        elif result == 'hit':
+            self.map[row][col] = 'x'
+        elif result == 'sink':
+            for i in range(row - 1, row + 2):
+                for j in range(col - 1, col + 2):
+                    if (0 <= i < 10) and (0 <= j < 10):
+                        if self.map[i][j] == '.':
+                            self.map[i][j] = '*'
+            self.map[row][col] = 'x'
+            for j in range(len(self.map)):  # горизонтальный корабль
+                if self.map[row][j] == 'x':
+                    col = j
+                    for i in range(row - 1, row + 2):
+                        for k in range(col - 1, col + 2):
+                            if (0 <= i < 10) and (0 <= k < 10):
+                                if self.map[i][k] == '.':
+                                    self.map[i][k] = '*'
+            for l in range(len(self.map)): # вертикальный корабль
+                if self.map[l][col] == 'x':
+                    row = l
+                    for m in range(row - 1, row + 2):
+                        for n in range(col - 1, col + 2):
+                            if (0 <= m < 10) and (0 <= n < 10):
+                                if self.map[m][n] == '.':
+                                    self.map[m][n] = '*'
+ 
+    def cell(self, row, col):
+        return self.map[row][col]
+
+
+'''sm = SeaMap()
+sm.shoot(2, 0, 'miss')
+sm.shoot(6, 9, 'miss')
+for row in range(10):
+    for col in range(10):
+        print(sm.cell(row, col), end='')
+    print()'''
+
+'''sm = SeaMap()
+sm.shoot(2, 0, 'sink')
+sm.shoot(6, 9, 'hit')
+for row in range(10):
+    for col in range(10):
+        print(sm.cell(row, col), end='')
+    print()'''

@@ -1,0 +1,42 @@
+(DEFUN MY_LAST(L)
+    (COND
+       ((NULL (CDR L)) (CAR L))
+       (T (MY_LAST(CDR L)))
+	)
+)
+
+(DEFUN FIRST_COL(L)
+    (COND
+        ((NULL L) NIL)
+        (T (CONS (CAR (CAR L)) (FIRST_COL (CDR L))))
+	)
+)
+;(print (FIRST_COL '((1 2 3 4)(51 6 75 8)(92 23 4 3))))
+
+(DEFUN WITHOUT_1_COL(L)
+    (COND
+        ((NULL L) NIL)
+        (T (CONS (CDR (CAR L)) (WITHOUT_1_COL (CDR L))))
+	)
+)
+;(print (WITHOUT_1_COL '((1 2 3 4)(51 6 75 8)(92 23 4 3))))
+
+(DEFUN TRANS(L)
+    (COND
+        ((NULL (CAR L)) NIL)
+        (T (CONS (FIRST_COL L) (TRANS (WITHOUT_1_COL L))))
+	)
+)
+;(print (TRANS '((1 2)(3 4)(5 6))))
+
+(DEFUN MSUM(L1 L2)
+    (COND
+        ((NULL L1) NIL)
+        ((NULL L2) NIL)
+        ((NULL (CAR L1)) (MSUM (CDR L1) L2))
+        ((NULL (CAR L2)) (MSUM L1 (CDR L2)))
+        (T (CONS (+ (CAR (CAR L1)) (CAR (CAR L2))) (MSUM (CONS (CDR (CAR L1))(CDR L1)) (CONS (CDR (CAR L2))(CDR L2)))))
+	)
+)
+(print (MSUM '((1 2 3)(4 5 6)) '((1 1 1)(1 1 1))))
+

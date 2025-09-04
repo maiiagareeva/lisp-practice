@@ -1,0 +1,5 @@
+(dlgCreate 'd-1 200 200 "Диалог-1")
+(dlgAddControl 'd-1 'c-0 _LIST 8 8 175 120 '("FixedSys" 8 0 0 0) 1) 
+(dlgPutList 'c-0 '("ПППП" "GGGGG" "FFFF"))
+(dlgAddControl 'd-1 'b-2 _BUTTON 8 130 175 40 '("Tahoma" 9 1 1 0) "Закрыть")
+(dlgShow 'd-1)

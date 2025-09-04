@@ -1,0 +1,7 @@
+ (filOpen 'inp "lispik.exe" _BINARY_READ)
+ (bloCreate 'buf-1 800)
+ (bloCreate 'buf-2 800)
+ (filGetBlob 'inp 'buf-1)
+ (bloInstr 'buf-1 "PE")
+ (bloCopy 'buf-1 'buf-2)
+ (bloDump* 'buf-2)

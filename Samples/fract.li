@@ -1,0 +1,84 @@
+;;
+;;  Простенький фрактал
+;;  Ординарный перевод с Паскаля 
+;;
+;;  Файфель Б.Л.
+;;
+
+(defun fra (ax ay bx by l w)  
+
+       (prog (cx cy dx dy ex ey e1x e1y fx fy f1x f1y gx gy)
+
+             (setq cx (+ ax (/ (- bx ax) 3)))
+             (setq cy (+ ay (/ (- by ay) 3)))
+
+             (setq dx (- bx (/ (- bx ax) 3)))
+             (setq dy (- by (/ (- by ay) 3)))
+           
+             (setq e1x ay)
+             (setq e1y bx)
+
+             (setq ex by)
+             (setq ey ax)
+ 
+             (setq fx (+ ax (* 0.5 (- bx ax))))
+             (setq fy (+ ay (* 0.5 (- by ay))))
+
+             (setq f1x (+ fx (- e1x ex)))
+             (setq f1y (+ fy (- e1y ey)))
+
+             (setq gx (+ fx (/ (- f1x fx) 3)))
+             (setq gy (+ fy (/ (- f1y fy) 3)))
+
+             (cond ((= l 0)
+                            (prog nil
+                               (grwLine 'w ax ay cx cy _YELLOW)
+                               (grwLine 'w cx cy gx gy _YELLOW)
+                               (grwLine 'w gx gy dx dy _YELLOW)
+                               (grwLine 'w dx dy bx by _YELLOW)
+                            )
+                   ) 
+                  
+                   (T       (prog nil
+                               (fra ax ay cx cy (- l 1) w)
+                               (fra cx cy gx gy (- l 1) w)
+                               (fra gx gy dx dy (- l 1) w)
+                               (fra dx dy bx by (- l 1) w)
+                            )
+                   )
+
+             )
+
+       )
+       
+)
+
+(prog (level w ax ay bx by)
+
+      (grwCreate 'w 300 300 "Фрактальчик" _BLACK)
+
+      (setq level (str2fix (ask "Задайте порядок")))
+
+      (cond ((> level 8) (prog nil (grwDestroy 'w) (exit "Слишком много!..."))))
+
+      (grwShow 'w) 
+
+      (setq ax 299)
+      (setq ay 199)
+      
+      (setq bx 1)
+      (setq by 199)
+
+      (fra ax ay bx by level 'w)
+  
+@Loop (setq inkey (grwInkey 'w 200))
+      (cond ((= inkey 0) (go @Loop)))
+
+      (grwDestroy 'w)
+
+      (exit) 
+
+)
+
+
+     

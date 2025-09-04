@@ -1,0 +1,379 @@
+class LeftParagraph:
+    def __init__(self, width):
+        self.width = width
+        self.paragraph = []
+
+    def add_word(self, word):
+        self.paragraph.append(word)
+
+    def end(self):
+        text = ''        
+        for i in range(len(self.paragraph)):
+            elem = self.paragraph[i]
+            if text == '':
+                text = elem
+            elif len(text) + len(elem) + 1 <= self.width:
+                text += ' ' + elem
+            else:
+                print(text)
+                text = elem
+        print(text)
+
+
+
+
+class RightParagraph:
+    def __init__(self, width):
+        self.width = width
+        self.paragraph = []
+
+    def add_word(self, word):
+        self.paragraph.append(word)
+
+    def end(self):
+        text = ''       
+        for i in range(len(self.paragraph)):
+            elem = self.paragraph[i]
+            if text == '':
+                text = elem
+            elif len(text) + len(elem) + 1 <= self.width:
+                text += ' ' + elem
+            else:
+                length = len(text)
+                a = ''.join([' ' for i in range(self.width - length)])
+                print(a + text)
+                text = elem
+        length = len(text)
+        a = ''.join([' ' for i in range(self.width - length)])
+        print(a + text)
+
+'''lp = LeftParagraph(8)
+lp.add_word('abc')
+lp.add_word('defg')
+lp.add_word('hi')
+lp.add_word('jklmnopq')
+lp.add_word('r')
+lp.add_word('stuv')
+lp.end()'''
+'''print()
+rp = RightParagraph(8)
+rp.add_word('abc')
+rp.add_word('defg')
+rp.add_word('hi')
+rp.add_word('jklmnopq')
+rp.add_word('r')
+rp.add_word('stuv')
+rp.end()
+print()'''
+class Rectangle:
+    def __init__(self, x, y, w, h):
+        self.low_left_x = x
+        self.low_left_y = y
+        self.width = w
+        self.height = h
+    def intersection(self, rect2):
+        if (rect2.get_x() >= self.low_left_x + self.width) or (rect2.get_y() >= self.low_left_y + self.height) or (self.low_left_x >= rect2.get_x() + self.width) or (self.low_left_y >= rect2.get_y() + self.height):
+            return None        
+        else:
+            rect3_x = max(self.low_left_x, rect2.get_x())
+            rect3_y = max(self.low_left_y, rect2.get_y())
+            rect3_w = max(self.low_left_x + self.width, rect2.get_x() + rect2.get_w()) - rect3_x
+            rect3_h = max(self.low_left_y + self.height, rect2.get_y() + rect2.get_h()) - rect3_y
+            return Rectangle(rect3_x, rect3_y, rect3_w, rect3_h)
+
+    def get_x(self):
+        return self.low_left_x
+    def get_y(self):
+        return self.low_left_y
+    def get_w(self):
+        return self.width
+    def get_h(self):
+        return self.height
+
+'''rect1 = Rectangle(0, 0, 10, 10)
+rect2 = Rectangle(5, 5, 10, 10)
+rect3 = rect1.intersection(rect2)
+if rect3 is None:
+     print('No intersection')
+else:
+      print(rect3.get_x(), rect3.get_y(), rect3.get_w(), rect3.get_h())'''
+
+'''rect1 = Rectangle(0, 0, 10, 10)
+rect2 = Rectangle(10, 0, 10, 10)
+rect3 = rect1.intersection(rect2)
+if rect3 is None:       
+    print('No intersection')
+else:      
+    print(rect3.get_x(), rect3.get_y(), rect3.get_w(), rect3.get_h())'''
+
+
+class Table:
+    def __init__(self, row, col):
+        self.matrix = [[0]*col for i in range(row)]
+    def get_value(self, row, col):
+        if row > (len(self.matrix) - 1) or col > (len(self.matrix[0]) - 1):
+            return None
+        elif row < 0 or col < 0:
+            return None
+        else:
+            return self.matrix[row][col]
+    def set_value(self, row, col, value):
+        self.matrix[row][col] = value
+    def n_rows(self):
+        return len(self.matrix)
+    def n_cols(self):
+        return len(self.matrix[0])
+    def delete_row(self, row):
+        self.matrix.pop(row)
+    def delete_col(self, col):
+        for elem in self.matrix:
+            elem.pop(col)
+    def add_row(self, row):
+        self.matrix.insert(row, [0]*len(self.matrix[0]))
+    def add_col(self, col):
+        for elem in self.matrix:
+            elem.insert(col, 0)
+    
+    
+# tab = Table(3, 5)
+# tab.set_value(0, 1, 10)
+# tab.set_value(1, 2, 20)
+# tab.set_value(2, 3, 30)
+# for i in range(tab.n_rows()):
+#     for j in range(tab.n_cols()):
+#         print(tab.get_value(i, j), end=' ')
+#     print()
+# print()
+# tab.add_row(1)
+# for i in range(tab.n_rows()):
+#     for j in range(tab.n_cols()):
+#         print(tab.get_value(i, j), end=' ')
+#     print()
+# print()
+
+# tab = Table(2, 2)
+# for i in range(tab.n_rows()):
+#     for j in range(tab.n_cols()):
+#         print(tab.get_value(i, j), end=' ')
+#     print()
+# print()
+# tab.set_value(0, 0, 10)
+# tab.set_value(0, 1, 20)
+# tab.set_value(1, 0, 30)
+# tab.set_value(1, 1, 40)
+# for i in range(tab.n_rows()):
+#     for j in range(tab.n_cols()):
+#         print(tab.get_value(i, j), end=' ')
+#     print()
+# print()
+# #########
+# for i in range(-1, tab.n_rows() + 1):
+#     for j in range(-1, tab.n_cols() + 1):
+#         print(tab.get_value(i, j), end=' ')
+#     print()
+# print()
+# tab.add_row(0)
+# tab.add_col(1)
+# for i in range(-1, tab.n_rows() + 1):
+#     for j in range(-1, tab.n_cols() + 1):
+#         print(tab.get_value(i, j), end=' ')
+#     print()
+# print()
+# tab = Table(1, 1)
+# for i in range(tab.n_rows()):
+#     for j in range(tab.n_cols()):
+#         print(tab.get_value(i, j), end=' ')
+#     print()
+# print()
+# tab.set_value(0, 0, 1000)
+# for i in range(tab.n_rows()):
+#     for j in range(tab.n_cols()):
+#         print(tab.get_value(i, j), end=' ')
+#     print()
+# print()
+# for i in range(-1, tab.n_rows() + 1):
+#     for j in range(-1, tab.n_cols() + 1):
+#         print(tab.get_value(i, j), end=' ')
+#     print()
+# print()
+# tab.add_row(0)
+# tab.add_row(2)
+# tab.add_col(0)
+# tab.add_col(2)
+# tab.set_value(0, 0, 2000)
+# tab.set_value(0, 2, 3000)
+# tab.set_value(2, 0, 4000)
+# tab.set_value(2, 2, 5000)
+# for i in range(-1, tab.n_rows() + 1):
+#     for j in range(-1, tab.n_cols() + 1):
+#         print(tab.get_value(i, j), end=' ')
+#     print()
+# print()
+
+class Person:
+    def __init__(self, name, father, sername, numerous):
+        self.name = name
+        self.father = father
+        self.sername = sername
+        self.numerous = numerous
+    def get_phone(self):
+        return self.numerous.get('private')
+    def get_name(self):
+        return ' '.join([self.sername, self.name, self.father])
+    def get_work_phone(self):
+        return self.numerous.get('work')
+    def get_sms_text(self):
+        return f'Уважаемый {self.name} {self.father}! Примите участие в нашем беспроигрышном конкурсе для физических лиц'
+
+class Company:
+    def __init__(self, name, type, numerous, *people):
+        self.name = name
+        self.type = type
+        self.numerous = numerous
+        self.people = people
+    def get_phone(self):
+        if 'contact' in self.numerous:
+            return self.numerous['contact']
+        elif 'contact' not in self.numerous:
+            for elem in self.people:
+                if elem.get_work_phone():
+                    return elem.get_work_phone()
+    def get_name(self):
+        return self.name
+    def get_sms_text(self):
+        return f'Для компании {self.name} есть суперпредложение! Примите участие в нашем беспроигрышном конкурсе для {self.type}'
+    
+    
+def send_sms(*objects):
+    for elem in objects:
+        if elem.get_phone():
+            print(f'Отправлено СМС на номер {elem.get_phone()} c текстом: {elem.get_sms_text()}')
+        else:
+            print(f'Не удалось отправить сообщение абоненту: {elem.get_name()}')
+
+
+# person1 = Person("Ivan", "Ivanovich", "Ivanov", {"private": 123, "work": 456})
+# person2 = Person("Ivan", "Petrovich", "Petrov", {"private": 789})
+# person3 = Person("Ivan", "Petrovich", "Sidorov", {"work": 789})
+# person4 = Person("John", "Unknown", "Doe", {})
+# company1 = Company("Bell", "ООО", {"contact": 111}, person3, person4)
+# company2 = Company("Cell", "АО", {"non_contact": 222}, person2, person3)
+# company3 = Company("Dell", "Ltd", {"non_contact": 333}, person2, person4)
+# send_sms(person1, person2, person3, person4, company1, company2, company3)
+
+# person1 = Person("Степан", "Петрович", "Джобсов", {"private": 555})
+# person2 = Person("Боря", "Иванович", "Гейтсов", {"private": 777, "work": 888})
+# person3 = Person("Семен", "Робертович", "Возняцкий", {"work": 789})
+# person4 = Person("Леонид", "Арсенович", "Торвальдсон", {})
+# company1 = Company("Яблочный комбинат", "ООО", {"contact": 111}, person1, person3)
+# company2 = Company("ПластОкно", "АО", {"non_contact": 222}, person2)
+# company3 = Company("Пингвинья ферма", "Ltd", {"non_contact": 333}, person4)
+# send_sms(person1, person2, person3, person4, company1, company2, company3)
+
+
+class ReversedList:
+    def __init__(self, lis):
+        self.lis = lis[::-1]
+    def __len__(self):
+        return len(self.lis)
+    def __getitem__(self,index):
+        return self.lis[index]
+
+        
+
+# rl = ReversedList([10, 20, 30])
+# for i in range(len(rl)):
+#     print(rl[i])
+
+# rl = ReversedList([])
+# print(len(rl)) 
+
+# rl = ReversedList([10])
+# print(len(rl))
+# print(rl[0])
+
+class SquareFunction:
+    def __init__(self, a, b, c):
+        self.a = a
+        self.b = b
+        self.c = c
+    def __call__ (self, x):
+          return self.a * x**2 + self.b * x + self.c
+
+
+# sf = SquareFunction(1, 0, 0)
+# print(sf(-2))
+# print(sf(-1))
+# print(sf(-0))
+# print(sf(1))
+# print(sf(2))
+# print(sf(10))
+# sf = SquareFunction(1, 2, 1)
+# print(sf(-2))
+# print(sf(-1))
+# print(sf(-0))
+# print(sf(1))
+# print(sf(2))
+# print(sf(10))
+# sf = SquareFunction(0, 0, 1)
+# print(sf(-2))
+# print(sf(-1))
+# print(sf(-0))
+# print(sf(1))
+# print(sf(2))
+# print(sf(10))
+
+
+class SparseArray:
+    def __init__(self):
+        self.massi = {}
+    def __getitem__(self, key):
+        return self.massi.get(key, 0)
+    def __setitem__(self, key, value):
+        self.massi[key] = value
+
+# arr = SparseArray()
+# arr[1] = 10
+# arr[8] = 20
+# for i in range(10):
+#     print('arr[{}] = {}'.format(i, arr[i]))
+# arr = SparseArray()
+# arr[10] = 123
+# for i in range(8, 13):
+#  print('arr[{}] = {}'.format(i, arr[i]))
+# def print_elem(array, ind):
+#  print('arr[{}] = {}'.format(ind, arr[ind]))
+# arr = SparseArray()
+# index = 1000000000
+# arr[index] = 123
+# print_elem(arr, index - 1)
+# print_elem(arr, index)
+# print_elem(arr, index + 1)
+
+class Queue:
+    def __init__(self, *parametr):
+        self.parametr = list(parametr)
+    def append(self, *values):
+        return self.parametr.extend(list(values))
+    def copy(self):
+        return self.parametr
+    def pop(self):
+        if self.parametr == []:
+            return None
+        else:
+            a = self.parametr[0]
+            self.parametr.pop(0)
+            return a
+    def extend(self, queue):
+        return self.parametr.extend(list(queue))
+    def next(self):
+        return self.parametr[1:]
+    
+
+q1 = Queue(1, 2, 3)
+print(q1)
+q1.append(4, 5)
+print(q1)
+qx = q1.copy()
+print(qx.pop())
+print(qx)
